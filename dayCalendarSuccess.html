@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>カレンダー</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <link rel="stylesheet" href="./css/reset.css" />
+    <link rel="stylesheet" href="./css/common.css" />
+    <link rel="stylesheet" href="./css/dayCalendar.css" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script type="text/javascript" src="./src/script.js"></script>
+  </head>
+  <body>
+    <header>
+      <nav class="nav-header">
+        <p class="nav-title"><a href="./index.html"></a>カレンダー</p>
+        <ul class="nav-list">
+          <li class="nav-link"><a href="./dayCalendar.html"></a>校時単位</li>
+          <li class="nav-link"><a href="./weekCalendar.html"></a>週単位</li>
+          <li class="nav-link"><a href="./monthCalendar.html"></a>月単位</li>
+          <li class="nav-link"><a href="./termCalendar.html"></a>学期単位</li>
+        </ul>
+      </nav>
+    </header>
+    <main>
+      <section class="calendar-container">
+        <table class="calendar">
+          <caption class="day">
+            06/08(月)
+          </caption>
+          <thead>
+            <tr>
+              <th>
+                <p>1</p>
+                <p>9:00 ～</p>
+              </th>
+              <th>
+                <p>2</p>
+                <p>10:40 ～</p>
+              </th>
+              <th>
+                <p>3</p>
+                <p>13:00 ～</p>
+              </th>
+              <th>
+                <p>4</p>
+                <p>14:40 ～</p>
+              </th>
+              <th>
+                <p>5</p>
+                <p>16:20 ～</p>
+              </th>
+              <th>
+                <p>6</p>
+                <p>18:00 ～</p>
+              </th>
+              <th>
+                <p>放課後</p>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="cell">
+                <form
+                  class="change inactive"
+                  action="./dayCalendarSuccess.html"
+                  method="post"
+                >
+                  <select class="change-type" name="change">
+                    <option value="">選択</option>
+                    <option value="休講">休講</option>
+                    <option value="宿題">宿題</option>
+                    <option value="振替">振替</option>
+                    <option value="試験">試験</option>
+                  </select>
+                  <input
+                    class="change-calendar inactive"
+                    type="date"
+                    name="calendar"
+                    max="9999-12-31"
+                  />
+                  <input class="btn" type="submit" value="送信" />
+                </form>
+              </td>
+              <td class="cell">
+                <p>コンピュータビジョン</p>
+                <p>試験</p>
+                <form
+                  class="change inactive"
+                  action="./dayCalendarSuccess.html"
+                  method="post"
+                >
+                  <select class="change-type" name="change">
+                    <option value="">選択</option>
+                    <option value="休講">休講</option>
+                    <option value="宿題">宿題</option>
+                    <option value="振替">振替</option>
+                    <option value="試験">試験</option>
+                  </select>
+                  <input
+                    class="change-calendar inactive"
+                    type="date"
+                    name="calendar"
+                    max="9999-12-31"
+                  />
+                  <input class="btn" type="submit" value="送信" />
+                </form>
+              </td>
+              <td class="cell">
+                <form
+                  class="change inactive"
+                  action="./dayCalendarSuccess.html"
+                  method="post"
+                >
+                  <select class="change-type" name="change">
+                    <option value="">選択</option>
+                    <option value="休講">休講</option>
+                    <option value="宿題">宿題</option>
+                    <option value="振替">振替</option>
+                    <option value="試験">試験</option>
+                  </select>
+                  <input
+                    class="change-calendar inactive"
+                    type="date"
+                    name="calendar"
+                    max="9999-12-31"
+                  />
+                  <input class="btn" type="submit" value="送信" />
+                </form>
+              </td>
+              <td class="cell">
+                <p>ソフトウェア設計法</p>
+                <p>休講</p>
+                <form
+                  class="change inactive"
+                  action="./dayCalendarSuccess.html"
+                  method="post"
+                >
+                  <select class="change-type" name="change">
+                    <option value="">選択</option>
+                    <option value="休講">休講</option>
+                    <option value="宿題">宿題</option>
+                    <option value="振替">振替</option>
+                    <option value="試験">試験</option>
+                  </select>
+                  <input
+                    class="change-calendar inactive"
+                    type="date"
+                    name="calendar"
+                    max="9999-12-31"
+                  />
+                  <input class="btn" type="submit" value="送信" />
+                </form>
+              </td>
+              <td class="cell">
+                <form
+                  class="change inactive"
+                  action="./dayCalendarSuccess.html"
+                  method="post"
+                >
+                  <select class="change-type" name="change">
+                    <option value="">選択</option>
+                    <option value="休講">休講</option>
+                    <option value="宿題">宿題</option>
+                    <option value="振替">振替</option>
+                    <option value="試験">試験</option>
+                  </select>
+                  <input
+                    class="change-calendar inactive"
+                    type="date"
+                    name="calendar"
+                    max="9999-12-31"
+                  />
+                  <input class="btn" type="submit" value="送信" />
+                </form>
+              </td>
+              <td class="cell">
+                <p>ソフトウェア設計法</p>
+                <p>宿題</p>
+                <form
+                  class="change inactive"
+                  action="./dayCalendarSuccess.html"
+                  method="post"
+                >
+                  <select class="change-type" name="change">
+                    <option value="">選択</option>
+                    <option value="休講">休講</option>
+                    <option value="宿題">宿題</option>
+                    <option value="振替">振替</option>
+                    <option value="試験">試験</option>
+                  </select>
+                  <input
+                    class="change-calendar inactive"
+                    type="date"
+                    name="calendar"
+                    max="9999-12-31"
+                  />
+                  <input class="btn" type="submit" value="送信" />
+                </form>
+              </td>
+              <td class="cell"></td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+    </main>
+  </body>
+</html>
