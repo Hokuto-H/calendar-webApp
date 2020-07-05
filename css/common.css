@@ -152,7 +152,8 @@ body {
   table-layout: fixed;
 }
 
-.calendar-container .calendar th, .calendar-container .calendar td {
+.calendar-container .calendar th,
+.calendar-container .calendar td {
   border: black solid 0.1rem;
 }
 

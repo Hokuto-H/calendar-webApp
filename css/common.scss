@@ -114,19 +114,21 @@ body {
     width: 180rem;
     margin: 0 auto;
     align-items: center;
-    text-align:center;
+    text-align: center;
     font-size: 2rem;
     border-collapse: collapse;
     table-layout: fixed;
-    th,td {
-        border: black solid 0.1rem;
+    th,
+    td {
+      border: black solid 0.1rem;
     }
     .date {
-        margin-bottom: 2%;
-        font-size: 4rem;
+      margin-bottom: 2%;
+      font-size: 4rem;
     }
     .change {
       .form-input {
+        //display: inline;
         cursor: pointer;
         height: 3rem;
         width: 6rem;
@@ -138,6 +140,6 @@ body {
         margin-top: 1rem;
       }
     }
-}
+  }
 }
 //ここまで

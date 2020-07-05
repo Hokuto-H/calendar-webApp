@@ -6,12 +6,16 @@ $(function () {
     $('.change-type').click(function () {
         let change = $(this).val();
         if (change == '振替') {
-            $(this).next('.change-calendar').removeClass('inactive');
-            $(this).next('.change-calendar').addClass('active-inline');
+            //change-calendarクラス
+            $(this).next().removeClass('inactive');
+            //change-periodクラス
+            $(this).next().next().removeClass('inactive');
         }
         if (change != '振替') {
-            $(this).next('.change-calendar').removeClass('active-inline');
-            $(this).next('.change-calendar').addClass('inactive');
+            //change-calendarクラス
+            $(this).next().addClass('inactive');
+            //change-periodクラス
+            $(this).next().next().addClass('inactive');
         }
     })
     //ここまで
