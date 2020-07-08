@@ -1,0 +1,11 @@
+<web-app> 
+  <servlet> 
+     <servlet-name>Task6</servlet-name>
+     <servlet-class>Task6</servlet-class>
+  </servlet>
+
+   <servlet-mapping> 
+     <servlet-name>Task6</servlet-name>
+     <url-pattern>/Task6</url-pattern>
+   </servlet-mapping>
+</web-app> 

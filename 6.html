@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>カレンダー</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <link rel="stylesheet" href="./css/reset.css" />
+    <link rel="stylesheet" href="./css/common.css" />
+    <link rel="stylesheet" href="./css/regist.css" />
+    <link
+      href="https://use.fontawesome.com/releases/v5.6.1/css/all.css"
+      rel="stylesheet"
+    />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script type="text/javascript" src="./src/script.js"></script>
+  </head>
+  <body>
+    <header>
+      <h1 class="title">カレンダー</h1>
+    </header>
+    <main>
+      <form action="Task6" method="GET">
+        <section class="form-term-container">
+          <p class="term-title">前学期</p>
+          <div class="form-lesson-container">
+            <div class="lesson-title-button">
+              <p>履修登録</p>
+              <button type="button" class="btn back deletion">削除する</button>
+              <button type="button" class="btn go addition">追加する</button>
+            </div>
+            <div class="lesson">
+              <div class="lesson-subtitle">
+                <p class="lesson-subtitle-short">曜日</p>
+                <p class="lesson-subtitle-short">時限</p>
+                <p class="lesson-subtitle-long">教科名</p>
+              </div>
+              <div class="form-parts-container">
+                <div class="form-parts">
+                  <select
+                    required
+                    class="form-input"
+                    name="previousterm-lesson-weekday"
+                  >
+                    <option value="">選択</option>
+                    <option value="月">月</option>
+                    <option value="火">火</option>
+                    <option value="水">水</option>
+                    <option value="木">木</option>
+                    <option value="金">金</option>
+                    <option value="土">土</option>
+                    <option value="日">日</option>
+                  </select>
+                </div>
+                <div class="form-parts">
+                  <select
+                    required
+                    class="form-input"
+                    name="previousterm-lesson-time"
+                  >
+                    <option value="">選択</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                  </select>
+                </div>
+                <div class="form-parts">
+                  <input
+                    class="form-input"
+                    name="previousterm-lesson-subjects"
+                    type="text"
+                    required
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+        <section class="form-btn-container">
+          <a class="btn back" href="./index.html">キャンセル</a>
+          <input class="btn go" type="submit" value="登録" />
+        </section>
+      </form>
+    </main>
+  </body>
+</html>
