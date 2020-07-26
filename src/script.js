@@ -57,11 +57,23 @@ $(function () {
   });
   //*ここまで
 
+  //*パスワードチェック
+  $("#password-re").change(function () {
+    const password = $("#password").val();
+    const passwordRe = $("#password-re").val();
+    if (password === passwordRe) {
+      $(".error-password").addClass("inactive");
+    } else {
+      $(".error-password").removeClass("inactive");
+    }
+  });
+  //*ここまで
+
   //*idバリデーション
   $("#id").change(function () {
-      var request = {
-        data : $("#id").val(),
-      }
+    var request = {
+      data: $("#id").val(),
+    };
     $.ajax({
       async: false,
       type: "GET",
@@ -69,11 +81,9 @@ $(function () {
       data: request,
       success: (truth) => {
         if (truth == "true") {
-          //* ここでspanかなんかでエラメか成功か出す
-          $(".error-pass").removeClass("inactive");
+          $(".error-id").addClass("inactive");
         } else {
-          //* ここでspanかなんかでエラメか成功か出す
-          $(".error-pass").addClass("inactive");
+          $(".error-id").removeClass("inactive");
         }
       },
       error: function (XMLHttpRequest, textStatus, errorThrown) {

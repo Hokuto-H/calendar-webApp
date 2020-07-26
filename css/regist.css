@@ -13,7 +13,6 @@
 }
 
 .form-login-container .form-title .error-msg {
-  display: none;
   color: #ff0000;
   margin-left: 2%;
   vertical-align: middle;

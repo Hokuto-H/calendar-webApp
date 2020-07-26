@@ -12,7 +12,7 @@ public class DataBase {
 
     private void sqlConnect() {
         try {
-            this.db = DriverManager.getConnection("jdbc:mysql://localhost/db_u306161", "u306161", "p306161");
+            this.db = DriverManager.getConnection("jdbc:mysql://localhost/db_u306161?useUnicode=true&characterEncoding=utf8", "u306161", "p306161");
         } catch (Exception e) {
             e.printStackTrace();
             try {
@@ -26,7 +26,7 @@ public class DataBase {
     public void setAccount(String id, String password) {
         try {
             this.sqlConnect();
-            this.ps = this.db.prepareStatement("INSERT INTO sample (key, id, password) VALUES(?, ?)");
+            this.ps = this.db.prepareStatement("INSERT INTO user (id, password) VALUES(?, ?)");
             this.ps.setString(1, id);
             this.ps.setString(2, password);
             this.ps.executeUpdate();
@@ -41,11 +41,18 @@ public class DataBase {
         }
     }
 
-    public void setSchedule(String[] sche) {
+    public void setSchedule(String id, String[] schedule) {
+        int i = 0;
         try {
             this.sqlConnect();
-            this.ps = this.db.prepareStatement("");
-            this.rs = this.ps.executeQuery();
+            this.ps = this.db.prepareStatement(
+                    "INSERT INTO schedule VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+            this.ps.setString(1, id);
+            while (i < 42) {
+                this.ps.setString(i + 2, schedule[i]);
+                i++;
+            }
+            this.ps.executeUpdate();
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -55,6 +62,30 @@ public class DataBase {
                 er.printStackTrace();
             }
         }
+    }
+
+    public String[] getSchedule(String id) {
+        String[] schedule = new String[42];
+        try {
+            this.sqlConnect();
+            this.ps = this.db.prepareStatement("SELECT * FROM schedule WHERE id = ?");
+            this.ps.setString(1, id);
+            this.rs = this.ps.executeQuery();
+            while (this.rs.next()) {
+                for (int i = 0; i < 42; i++) {
+                    schedule[i] = this.rs.getString(i + 2);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                this.db.close();
+            } catch (Exception er) {
+                er.printStackTrace();
+            }
+        }
+        return schedule;
     }
 
     public Boolean loginCheck(String id, String password) {
