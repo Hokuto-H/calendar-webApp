@@ -22,14 +22,14 @@
       <form action="./dayCalendar.html" method="GET">
         <input type="hidden" name="page" value="regist">
         <section class="form-login-container">
-          <p class="form-title">ログインID</p>
+          <p class="form-title">ログインID<span class="error-id error-msg inactive">このIDは使えません</span></p>
           <input id="id" class="form-input" type="text" name="id" required />
           <p class="form-title">パスワード</p>
           <input class="form-input" type="password" name="password" required />
           <div class="field-icon">
             <i class="fas fa-eye"></i>
           </div>
-          <p class="form-title">パスワード（再入力）</p>
+          <p class="form-title">パスワード（再入力）<span class="error-password error-msg inactive">一致しません</span></p>
           <input class="form-input" type="password" required />
           <div class="field-icon">
             <i class="fas fa-eye"></i>

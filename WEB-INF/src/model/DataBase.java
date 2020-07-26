@@ -10,7 +10,7 @@ public class DataBase {
     private PreparedStatement ps = null;
     private ResultSet rs = null;
 
-    private void sqlOrder() {
+    private void sqlConnect() {
         try {
             this.db = DriverManager.getConnection("jdbc:mysql://localhost/db_u306161", "u306161", "p306161");
         } catch (Exception e) {
@@ -25,7 +25,7 @@ public class DataBase {
 
     public void setAccount(String id, String password) {
         try {
-            this.sqlOrder();
+            this.sqlConnect();
             this.ps = this.db.prepareStatement("INSERT INTO sample (key, id, password) VALUES(?, ?)");
             this.ps.setString(1, id);
             this.ps.setString(2, password);
@@ -43,7 +43,7 @@ public class DataBase {
 
     public void setSchedule(String[] sche) {
         try {
-            this.sqlOrder();
+            this.sqlConnect();
             this.ps = this.db.prepareStatement("");
             this.rs = this.ps.executeQuery();
         } catch (Exception e) {
@@ -59,7 +59,7 @@ public class DataBase {
 
     public Boolean loginCheck(String id, String password) {
         try {
-            this.sqlOrder();
+            this.sqlConnect();
             // *id検索
             this.ps = this.db.prepareStatement("SELECT id FROM user WHERE id = ?");
             this.ps.setString(1, id);
@@ -89,7 +89,7 @@ public class DataBase {
 
     public Boolean idCheck(String id) {
         try {
-            this.sqlOrder();
+            this.sqlConnect();
             this.ps = this.db.prepareStatement("SELECT id FROM user WHERE id = ?");
             this.ps.setString(1, id);
             this.rs = this.ps.executeQuery();
@@ -111,7 +111,7 @@ public class DataBase {
     }
     /*
      * public String[] getSchedule() { String[] schedule = new String[42]; try {
-     * this.sqlOrder(); this.ps = this.db.prepareStatement(""); this.rs =
+     * this.sqlConnect(); this.ps = this.db.prepareStatement(""); this.rs =
      * this.ps.executeQuery(); return schedule; } catch (Exception e) {
      * e.printStackTrace(); } finally { try { this.db.close(); } catch (Exception
      * er) { er.printStackTrace(); } } }

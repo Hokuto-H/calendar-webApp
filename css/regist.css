@@ -12,6 +12,14 @@
   font-size: 3rem;
 }
 
+.form-login-container .form-title .error-msg {
+  display: none;
+  color: #ff0000;
+  margin-left: 2%;
+  vertical-align: middle;
+  font-size: 1.5rem;
+}
+
 .form-login-container .form-input {
   width: 40rem;
   height: 5rem;

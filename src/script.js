@@ -70,10 +70,10 @@ $(function () {
       success: (truth) => {
         if (truth == "true") {
           //* ここでspanかなんかでエラメか成功か出す
-          alert("アリ" + truth);
+          $(".error-pass").removeClass("inactive");
         } else {
           //* ここでspanかなんかでエラメか成功か出す
-          alert("ダメ" + truth);
+          $(".error-pass").addClass("inactive");
         }
       },
       error: function (XMLHttpRequest, textStatus, errorThrown) {
@@ -86,4 +86,5 @@ $(function () {
       },
     });
   });
+  //*ここまで
 });

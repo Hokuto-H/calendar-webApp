@@ -8,6 +8,13 @@
     margin-top: 2%;
     text-align: left;
     font-size: 3rem;
+    .error-msg {
+      display: none;
+      color: #ff0000;
+      margin-left: 2%;
+      vertical-align: middle;
+      font-size: 1.5rem;
+    }
   }
   .form-input {
     width: 40rem;
