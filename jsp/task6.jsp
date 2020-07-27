@@ -1,5 +1,4 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
-<%@ page import="model.Schedule" %>
 <%
 String[] sche = (String[]) request.getAttribute("schedule");
 String weekday[] = {"月","火","水","木","金","土","日"};
