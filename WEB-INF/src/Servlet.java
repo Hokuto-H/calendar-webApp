@@ -38,7 +38,7 @@ public class Servlet extends HttpServlet {
                 } else {
                     // *フォワード(ログイン失敗)、セッション破棄
                     session.invalidate();
-                    RequestDispatcher dispatcher = request.getRequestDispatcher("/cal/loginFailed.html");
+                    RequestDispatcher dispatcher = request.getRequestDispatcher("/loginFailed.html");
                     dispatcher.forward(request, response);
                 }
                 break;
