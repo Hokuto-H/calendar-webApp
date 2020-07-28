@@ -36,11 +36,10 @@ cal.setTime(date);
         <section class="calendar-container">
             <table class="calendar">
               <caption class="date">
-                <%= cal.get(Calendar.MONTH) %>/<%= cal.get(Calendar.DAY_OF_MONTH) %> ～ <% cal.add(Calendar.DAY_OF_MONTH, 7); %> <%= cal.get(Calendar.MONTH) %>/<%= cal.get(Calendar.DAY_OF_MONTH) %>
+                <%= cal.get(Calendar.MONTH) + 1 %>/<%= cal.get(Calendar.DAY_OF_MONTH) %>
               </caption>
               <thead>
                 <tr>
-                  <th></th>
                   <th>
                     <p>1</p>
                     <p>9:00 ～</p>
@@ -71,19 +70,16 @@ cal.setTime(date);
                 </tr>
               </thead>
             <tbody>
-                <%
-                  for (int i = 0; i < 7; i++) {
-                  %>
+                <% int week = cal.get(Calendar.DAY_OF_WEEK); %>
                   <tr>
-                    <th><%= weekday[i] %></th>
                     <%
                     for (int j = 0; j < 6; j++) {
                     %>
                     <td class="cell">
                     <%
-                        if (schedule[j + (i * 6)] != null) {
+                        if (schedule[j + (week * 6)] != null) {
                     %>
-                    <%= schedule[j + (i * 6)] %>
+                    <%= schedule[j + (week * 6)] %>
                     <form
                   class="change inactive"
                   action="./weekCalendarSuccess.html"
@@ -121,9 +117,6 @@ cal.setTime(date);
                     </td>
                     <td></td>
                   </tr>
-                <%
-                }
-                %>
             </tbody>
         </table>
     </body>

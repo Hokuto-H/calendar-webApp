@@ -36,7 +36,7 @@ cal.setTime(date);
         <section class="calendar-container">
             <table class="calendar">
               <caption class="date">
-                <%= cal.get(Calendar.MONTH) %>/<%= cal.get(Calendar.DAY_OF_MONTH) %> ～ <% cal.add(Calendar.DAY_OF_MONTH, 7); %> <%= cal.get(Calendar.MONTH) %>/<%= cal.get(Calendar.DAY_OF_MONTH) %>
+                <%= cal.get(Calendar.MONTH) + 1 %>/<%= cal.get(Calendar.DAY_OF_MONTH) %> ～ <% cal.add(Calendar.DAY_OF_MONTH, 7); %> <%= cal.get(Calendar.MONTH) + 1 %>/<%= cal.get(Calendar.DAY_OF_MONTH) %>
               </caption>
               <thead>
                 <tr>
