@@ -69,9 +69,7 @@ cal.set(year, month - 1, 1);
             <% while(cal.get(Calendar.MONTH) == month - 1) { %>
                 <tr>
                     <%
-                        int week;
                         for(int i = 1;i <= 7;i++) {
-                            week = cal.get(Calendar.DAY_OF_WEEK);
                             if (cal.get(Calendar.DAY_OF_WEEK) == i) { 
                     %>
                                 <td class="cell">
@@ -115,6 +113,9 @@ cal.set(year, month - 1, 1);
                     <%
                             }
                             if (cal.get(Calendar.DAY_OF_MONTH) == 1 && cal.get(Calendar.MONTH) != month - 1){
+                    %>
+                              
+                    <%
                                 break;
                             }
                         }
