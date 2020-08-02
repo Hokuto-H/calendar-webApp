@@ -77,9 +77,9 @@ cal.setTime(date);
                     %>
                     <td class="cell">
                     <%
-                        if (schedule[j + (week * 6)] != null) {
+                        if (schedule[j + ((week - 1) * 6)] != null) {
                     %>
-                    <%= schedule[j + (week * 6)] %>
+                    <%= schedule[j + ((week - 1) * 6)] %>
                     <form
                   class="change inactive"
                   action="./weekCalendarSuccess.html"

@@ -41,15 +41,42 @@ public class DataBase {
         }
     }
 
-    public void setSchedule(String id, String[] schedule) {
+    public void setPreviousSchedule(String id, String[] date, String[] schedule) {
         int i = 0;
         try {
             this.sqlConnect();
             this.ps = this.db.prepareStatement(
-                    "INSERT INTO schedule VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+                    "INSERT INTO previousSchedule VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
             this.ps.setString(1, id);
+            this.ps.setDate(2, Date.valueOf(date[0]));
+            this.ps.setDate(3, Date.valueOf(date[1]));
             while (i < 42) {
-                this.ps.setString(i + 2, schedule[i]);
+                this.ps.setString(i + 4, schedule[i]);
+                i++;
+            }
+            this.ps.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                this.db.close();
+            } catch (Exception er) {
+                er.printStackTrace();
+            }
+        }
+    }
+
+    public void setAfterSchedule(String id, String[] date, String[] schedule) {
+        int i = 0;
+        try {
+            this.sqlConnect();
+            this.ps = this.db.prepareStatement(
+                    "INSERT INTO afterSchedule VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+            this.ps.setString(1, id);
+            this.ps.setDate(2, Date.valueOf(date[2]));
+            this.ps.setDate(3, Date.valueOf(date[3]));
+            while (i < 42) {
+                this.ps.setString(i + 4, schedule[i]);
                 i++;
             }
             this.ps.executeUpdate();
@@ -68,12 +95,12 @@ public class DataBase {
         String[] schedule = new String[42];
         try {
             this.sqlConnect();
-            this.ps = this.db.prepareStatement("SELECT * FROM schedule WHERE id = ?");
+            this.ps = this.db.prepareStatement("SELECT * FROM previousSchedule WHERE id = ?");
             this.ps.setString(1, id);
             this.rs = this.ps.executeQuery();
             while (this.rs.next()) {
                 for (int i = 0; i < 42; i++) {
-                    schedule[i] = this.rs.getString(i + 2);
+                    schedule[i] = this.rs.getString(i + 4);
                 }
             }
         } catch (Exception e) {

@@ -49,12 +49,33 @@ public class Servlet extends HttpServlet {
                 String password = request.getParameter("password");
                 // * アカウント登録
                 db.setAccount(id, password);
-                // *name毎のリクエストパラメータ全取得
-                String[] x = request.getParameterValues("previousterm-lesson-weekday");
-                String[] y = request.getParameterValues("previousterm-lesson-time");
-                String[] z = request.getParameterValues("previousterm-lesson-subjects");
+                // *スケジュール配列初期化
+                String[] x = new String[42];
+                String[] y = new String[42];
+                String[] z = new String[42];
+                String[] date = new String[8];
+                //*前期と後期の日付取得
+                date[0] = request.getParameter("previousterm-start-month");
+                date[1] = request.getParameter("previousterm-start-day");
+                date[2] = request.getParameter("previousterm-end-month");
+                date[3] = request.getParameter("previousterm-end-day");
+                date[4] = request.getParameter("afterterm-start-month");
+                date[5] = request.getParameter("afterterm-start-day");
+                date[6] = request.getParameter("afterterm-end-month");
+                date[7] = request.getParameter("afterterm-end-day");
+                schedule.setDate(date);
+                // *前期のスケジュール
+                x = request.getParameterValues("previousterm-lesson-weekday");
+                y = request.getParameterValues("previousterm-lesson-time");
+                z = request.getParameterValues("previousterm-lesson-subjects");
                 schedule.setSchedule(x, y, z);
-                db.setSchedule(id, schedule.getSchedule());
+                db.setPreviousSchedule(id, schedule.getDate(), schedule.getSchedule());
+                // *後期のスケジュール
+                x = request.getParameterValues("afterterm-lesson-weekday");
+                y = request.getParameterValues("afterterm-lesson-time");
+                z = request.getParameterValues("afterterm-lesson-subjects");
+                schedule.setSchedule(x, y, z);
+                db.setAfterSchedule(id, schedule.getDate(), schedule.getSchedule());
                 // *セッション新規作成
                 HttpSession session = request.getSession(true);
                 // *フォワード(ログイン成功)、セッション設定
