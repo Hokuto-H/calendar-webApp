@@ -32,7 +32,10 @@ public class Servlet extends HttpServlet {
                 if (db.loginCheck(id, password)) {
                     // *フォワード(ログイン成功)、セッション設定
                     session.setAttribute("id", id);
-                    session.setAttribute("schedule", db.getSchedule(id));
+                    Date[] termPeriod = db.getTermPeriod(id, db.termCheck(id));
+                    session.setAttribute("startDate", termPeriod[0]);
+                    session.setAttribute("endDate", termPeriod[1]);
+                    session.setAttribute("schedule", db.getSchedule(id, db.termCheck(id)));
                     // *フォワードだとurl変更できない為リダイレクト
                     response.sendRedirect("./jsp/dayCalendar.jsp");
                 } else {
@@ -54,7 +57,7 @@ public class Servlet extends HttpServlet {
                 String[] y = new String[42];
                 String[] z = new String[42];
                 String[] date = new String[8];
-                //*前期と後期の日付取得
+                // *前期と後期の日付取得
                 date[0] = request.getParameter("previousterm-start-month");
                 date[1] = request.getParameter("previousterm-start-day");
                 date[2] = request.getParameter("previousterm-end-month");
@@ -80,7 +83,10 @@ public class Servlet extends HttpServlet {
                 HttpSession session = request.getSession(true);
                 // *フォワード(ログイン成功)、セッション設定
                 session.setAttribute("id", id);
-                session.setAttribute("schedule", db.getSchedule(id));
+                Date[] termPeriod = db.getTermPeriod(id, db.termCheck(id));
+                session.setAttribute("startDate", termPeriod[0]);
+                session.setAttribute("endDate", termPeriod[1]);
+                session.setAttribute("schedule", db.getSchedule(id, db.termCheck(id)));
                 // *フォワードだとurl変更できない為リダイレクト
                 response.sendRedirect("./jsp/dayCalendar.jsp");
                 break;
@@ -90,7 +96,7 @@ public class Servlet extends HttpServlet {
                 HttpSession session = request.getSession(false);
                 String id = (String) session.getAttribute("id");
                 // *ここでsqlとかいろいろやってスケジュール更新
-                session.setAttribute("schedule", db.getSchedule(id));
+                //session.setAttribute("schedule", db.getSchedule(id, db.termCheck(id)));
                 break;
             }
             default:

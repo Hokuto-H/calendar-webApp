@@ -2,6 +2,8 @@
 <%@ page import="java.util.*" %>
 <%
 String[] schedule = (String[]) session.getAttribute("schedule");
+Date startDate = (Date) session.getAttribute("startDate");
+Date endDate = (Date) session.getAttribute("endDate");
 String weekday[] = {"月","火","水","木","金","土","日"};
 Date date = new Date();
 Calendar cal = Calendar.getInstance();
@@ -70,6 +72,8 @@ cal.setTime(date);
                 </tr>
               </thead>
             <tbody>
+              <input type="hidden" name="page" value="update">
+                <% String today; %>
                 <% int week = cal.get(Calendar.DAY_OF_WEEK); %>
                   <tr>
                     <%
@@ -77,14 +81,16 @@ cal.setTime(date);
                     %>
                     <td class="cell">
                     <%
-                        if (schedule[j + ((week - 1) * 6)] != null) {
+                        if (schedule[j + ((week - 1) * 6)] != null && startDate.compareTo(cal.getTime()) <= 0 && endDate.compareTo(cal.getTime()) > 0) {
                     %>
                     <%= schedule[j + ((week - 1) * 6)] %>
                     <form
                   class="change inactive"
-                  action="./weekCalendarSuccess.html"
-                  method="post"
+                  action="Servlet"
+                  method="GET"
                 >
+                <% today = String.valueOf(cal.get(Calendar.YEAR)) + "-" + String.valueOf(cal.get(Calendar.MONTH) + 1) + "-" + String.valueOf(cal.get(Calendar.DAY_OF_MONTH)); %>
+                <input type="hidden" name="date" value="<%= today %>"> 
                   <select class="form-input change-type" name="change-type">
                     <option value="">選択</option>
                     <option value="休講">休講</option>

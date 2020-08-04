@@ -2,7 +2,8 @@
 <%@ page import="java.util.*" %>
 <%
 String[] schedule = (String[]) session.getAttribute("schedule");
-String weekday[] = {"月","火","水","木","金","土","日"};
+Date startDate = (Date) session.getAttribute("startDate");
+Date endDate = (Date) session.getAttribute("endDate");
 Date date = new Date();
 Calendar cal = Calendar.getInstance();
 cal.setTime(date);
@@ -43,6 +44,9 @@ cal.set(year, month - 1, 1);
           <thead>
             <tr>
               <th>
+                日
+              </th>
+              <th>
                 月
               </th>
               <th>
@@ -60,12 +64,11 @@ cal.set(year, month - 1, 1);
               <th>
                 土
               </th>
-              <th>
-                日
-              </th>
             </tr>
           </thead>
           <tbody>
+            <input type="hidden" name="page" value="update">
+            <% String today; %>
             <% while(cal.get(Calendar.MONTH) == month - 1) { %>
                 <tr>
                     <%
@@ -75,7 +78,7 @@ cal.set(year, month - 1, 1);
                                 <td class="cell">
                                     <p><%= cal.get(Calendar.DAY_OF_MONTH) %></p>
                                     <% for (int j = 0; j < 6; j++) {
-                                        if (schedule[j + ((i - 1 ) * 6)] != null) {
+                                        if (schedule[j + ((i - 1 ) * 6)] != null && startDate.compareTo(cal.getTime()) <= 0 && endDate.compareTo(cal.getTime()) > 0) {
                                     %>
                                             <p>授業</p>
                                             <form
@@ -83,6 +86,8 @@ cal.set(year, month - 1, 1);
                                             action="./monthCalendarSuccess.html"
                                             method="post"
                                           >
+                                          <% today = String.valueOf(cal.get(Calendar.YEAR)) + "-" + String.valueOf(cal.get(Calendar.MONTH) + 1) + "-" + String.valueOf(cal.get(Calendar.DAY_OF_MONTH)); %>
+                                            <input type="hidden" name="date" value="<%= today %>">
                                             <select class="form-input change-type" name="change-type">
                                               <option value="">選択</option>
                                               <option value="休講">休講</option>

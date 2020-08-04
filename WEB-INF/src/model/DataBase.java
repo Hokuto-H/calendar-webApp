@@ -2,8 +2,8 @@ package model;
 
 import java.sql.*;
 import javax.naming.*;
-import javax.sql.*;
 import java.text.*;
+import java.util.*;
 
 public class DataBase {
     private Connection db = null;
@@ -12,7 +12,8 @@ public class DataBase {
 
     private void sqlConnect() {
         try {
-            this.db = DriverManager.getConnection("jdbc:mysql://localhost/db_u306161?useUnicode=true&characterEncoding=utf8", "u306161", "p306161");
+            this.db = DriverManager.getConnection(
+                    "jdbc:mysql://localhost/db_u306161?useUnicode=true&characterEncoding=utf8", "u306161", "p306161");
         } catch (Exception e) {
             e.printStackTrace();
             try {
@@ -48,8 +49,8 @@ public class DataBase {
             this.ps = this.db.prepareStatement(
                     "INSERT INTO previousSchedule VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
             this.ps.setString(1, id);
-            this.ps.setDate(2, Date.valueOf(date[0]));
-            this.ps.setDate(3, Date.valueOf(date[1]));
+            this.ps.setDate(2, java.sql.Date.valueOf(date[0]));
+            this.ps.setDate(3, java.sql.Date.valueOf(date[1]));
             while (i < 42) {
                 this.ps.setString(i + 4, schedule[i]);
                 i++;
@@ -73,8 +74,8 @@ public class DataBase {
             this.ps = this.db.prepareStatement(
                     "INSERT INTO afterSchedule VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
             this.ps.setString(1, id);
-            this.ps.setDate(2, Date.valueOf(date[2]));
-            this.ps.setDate(3, Date.valueOf(date[3]));
+            this.ps.setDate(2, java.sql.Date.valueOf(date[2]));
+            this.ps.setDate(3, java.sql.Date.valueOf(date[3]));
             while (i < 42) {
                 this.ps.setString(i + 4, schedule[i]);
                 i++;
@@ -91,11 +92,16 @@ public class DataBase {
         }
     }
 
-    public String[] getSchedule(String id) {
+    public String[] getSchedule(String id, Boolean bool) {
         String[] schedule = new String[42];
         try {
             this.sqlConnect();
-            this.ps = this.db.prepareStatement("SELECT * FROM previousSchedule WHERE id = ?");
+            //*前期ならtrue,後期ならfalse
+            if (bool) {
+                this.ps = this.db.prepareStatement("SELECT * FROM previousSchedule WHERE id = ?");
+            } else {
+                this.ps = this.db.prepareStatement("SELECT * FROM afterSchedule WHERE id = ?");
+            }
             this.ps.setString(1, id);
             this.rs = this.ps.executeQuery();
             while (this.rs.next()) {
@@ -113,6 +119,65 @@ public class DataBase {
             }
         }
         return schedule;
+    }
+
+    public java.util.Date[] getTermPeriod(String id, Boolean bool) {
+        java.util.Date[] termPeriod = new java.util.Date[2];
+        try {
+            this.sqlConnect();
+            //*前期ならtrue,後期ならfalse
+            if (bool) {
+                this.ps = this.db.prepareStatement("SELECT * FROM previousSchedule WHERE id = ?");
+            } else {
+                this.ps = this.db.prepareStatement("SELECT * FROM afterSchedule WHERE id = ?");
+            }
+            this.ps.setString(1, id);
+            this.rs = this.ps.executeQuery();
+            this.rs.next();
+            termPeriod[0] = this.rs.getDate(2);
+            termPeriod[1] = this.rs.getDate(3);
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                this.db.close();
+            } catch (Exception er) {
+                er.printStackTrace();
+            }
+        }
+        return termPeriod;
+    }
+
+    public Boolean termCheck(String id) {
+        // *前期なら戻り値true、後期なら戻り値false
+        java.util.Date date = new java.util.Date();
+        try {
+            this.sqlConnect();
+            // *前期の開始日取得
+            this.ps = this.db.prepareStatement("SELECT * FROM previousSchedule WHERE id = ?");
+            this.ps.setString(1, id);
+            this.rs = this.ps.executeQuery();
+            this.rs.next();
+            java.util.Date date1 = this.rs.getDate(2);
+            // *後期の開始日取得
+            this.ps = this.db.prepareStatement("SELECT * FROM afterSchedule WHERE id = ?");
+            this.ps.setString(1, id);
+            this.rs = this.ps.executeQuery();
+            this.rs.next();
+            java.util.Date date2 = this.rs.getDate(2);
+            if (date1.compareTo(date) <= 0 && date2.compareTo(date) > 0) {
+                return true;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                this.db.close();
+            } catch (Exception er) {
+                er.printStackTrace();
+            }
+        }
+        return false;
     }
 
     public Boolean loginCheck(String id, String password) {
@@ -167,11 +232,4 @@ public class DataBase {
         // *失敗
         return false;
     }
-    /*
-     * public String[] getSchedule() { String[] schedule = new String[42]; try {
-     * this.sqlConnect(); this.ps = this.db.prepareStatement(""); this.rs =
-     * this.ps.executeQuery(); return schedule; } catch (Exception e) {
-     * e.printStackTrace(); } finally { try { this.db.close(); } catch (Exception
-     * er) { er.printStackTrace(); } } }
-     */
 }
