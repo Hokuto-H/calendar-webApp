@@ -73,7 +73,6 @@ cal.setTime(date);
                 </tr>
               </thead>
             <tbody>
-              <input type="hidden" name="page" value="update">
               <% String today; %>
                 <%
                   for (int i = 0; i < 7; i++) {
@@ -90,16 +89,17 @@ cal.setTime(date);
                     <%= schedule[j + (i * 6)] %>
                     <form
                   class="change inactive"
-                  action="./weekCalendarSuccess.html"
-                  method="post"
+                  action="../Servlet"
+                  method="GET"
                 >
                 <% today = String.valueOf(cal.get(Calendar.YEAR)) + "-" + String.valueOf(cal.get(Calendar.MONTH) + 1) + "-" + String.valueOf(cal.get(Calendar.DAY_OF_MONTH)); %>
-                <input type="hidden" name="date" value="<%= today %>">
+                  <input type="hidden" name="date" value="<%= today %>">
+                  <input type="hidden" name="page" value="update">
+                  <input type="hidden" name="lesson" value="<%= schedule[j + (i * 6)] %>">
                   <select class="form-input change-type" name="change-type">
                     <option value="">選択</option>
                     <option value="休講">休講</option>
                     <option value="宿題">宿題</option>
-                    <option value="振替">振替</option>
                     <option value="試験">試験</option>
                   </select>
                   <input

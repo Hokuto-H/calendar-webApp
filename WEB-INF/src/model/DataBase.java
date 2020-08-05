@@ -42,6 +42,33 @@ public class DataBase {
         }
     }
 
+    public void setEvent(String id, String date, String lesson, String changeType, String calendar,
+            String changePeriod) {
+        try {
+            this.sqlConnect();
+            this.ps = this.db.prepareStatement("INSERT INTO event VALUES(?, ?, ?, ?, ?, ?)");
+            this.ps.setString(1, id);
+            this.ps.setDate(2, java.sql.Date.valueOf(date));
+            this.ps.setString(3, lesson);
+            this.ps.setString(4, changeType);
+            if (changeType == "宿題") {
+                this.ps.setDate(5, java.sql.Date.valueOf(date));
+            } else {
+                this.ps.setDate(5, java.sql.Date.valueOf(calendar));
+            }
+            this.ps.setString(6, changePeriod);
+            this.ps.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                this.db.close();
+            } catch (Exception er) {
+                er.printStackTrace();
+            }
+        }
+    }
+
     public void setPreviousSchedule(String id, String[] date, String[] schedule) {
         int i = 0;
         try {
@@ -92,11 +119,40 @@ public class DataBase {
         }
     }
 
+    public String[][] getEvent(String id) {
+        String[][] event = new String[5][100];
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        try {
+            this.sqlConnect();
+            this.ps = this.db.prepareStatement("SELECT * FROM event WHERE id = ?");
+            this.ps.setString(1, id);
+            this.rs = this.ps.executeQuery();
+            int i = 0;
+            while (this.rs.next()) {
+                event[0][i] = dateFormat.format(this.rs.getDate(2));
+                event[1][i] = this.rs.getString(3);
+                event[2][i] = this.rs.getString(4);
+                event[3][i] = dateFormat.format(this.rs.getDate(5));
+                event[4][i] = this.rs.getString(6);
+                i++;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                this.db.close();
+            } catch (Exception er) {
+                er.printStackTrace();
+            }
+        }
+        return event;
+    }
+
     public String[] getSchedule(String id, Boolean bool) {
         String[] schedule = new String[42];
         try {
             this.sqlConnect();
-            //*前期ならtrue,後期ならfalse
+            // *前期ならtrue,後期ならfalse
             if (bool) {
                 this.ps = this.db.prepareStatement("SELECT * FROM previousSchedule WHERE id = ?");
             } else {
@@ -125,7 +181,7 @@ public class DataBase {
         java.util.Date[] termPeriod = new java.util.Date[2];
         try {
             this.sqlConnect();
-            //*前期ならtrue,後期ならfalse
+            // *前期ならtrue,後期ならfalse
             if (bool) {
                 this.ps = this.db.prepareStatement("SELECT * FROM previousSchedule WHERE id = ?");
             } else {
@@ -165,6 +221,7 @@ public class DataBase {
             this.rs = this.ps.executeQuery();
             this.rs.next();
             java.util.Date date2 = this.rs.getDate(2);
+            // *今日が開始日より後で終了日より前になる条件
             if (date1.compareTo(date) <= 0 && date2.compareTo(date) > 0) {
                 return true;
             }

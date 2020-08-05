@@ -36,6 +36,14 @@ public class Servlet extends HttpServlet {
                     session.setAttribute("startDate", termPeriod[0]);
                     session.setAttribute("endDate", termPeriod[1]);
                     session.setAttribute("schedule", db.getSchedule(id, db.termCheck(id)));
+                    session.setAttribute("bool", db.termCheck(id));
+                    //*ここからの授業変更しょりが出来ない
+                    String[][] event = db.getEvent(id);
+                    if (event != null) {
+                        session.setAttribute("event", event);
+                    } else {
+                        session.setAttribute("event", null);
+                    }
                     // *フォワードだとurl変更できない為リダイレクト
                     response.sendRedirect("./jsp/dayCalendar.jsp");
                 } else {
@@ -87,6 +95,7 @@ public class Servlet extends HttpServlet {
                 session.setAttribute("startDate", termPeriod[0]);
                 session.setAttribute("endDate", termPeriod[1]);
                 session.setAttribute("schedule", db.getSchedule(id, db.termCheck(id)));
+                session.setAttribute("bool", db.termCheck(id));
                 // *フォワードだとurl変更できない為リダイレクト
                 response.sendRedirect("./jsp/dayCalendar.jsp");
                 break;
@@ -96,7 +105,20 @@ public class Servlet extends HttpServlet {
                 HttpSession session = request.getSession(false);
                 String id = (String) session.getAttribute("id");
                 // *ここでsqlとかいろいろやってスケジュール更新
-                //session.setAttribute("schedule", db.getSchedule(id, db.termCheck(id)));
+                String v = request.getParameter("date");
+                String w = request.getParameter("lesson");
+                String x = request.getParameter("change-type");
+                String y = request.getParameter("calendar");
+                String z = request.getParameter("change-period");
+                db.setEvent(id, v, w, x, y, z);
+                String[][] event = db.getEvent(id);
+                if (event != null) {
+                    session.setAttribute("event", event);
+                } else {
+                    session.setAttribute("event", null);
+                }
+                // *フォワードだとurl変更できない為リダイレクト
+                response.sendRedirect("./jsp/dayCalendar.jsp");
                 break;
             }
             default:

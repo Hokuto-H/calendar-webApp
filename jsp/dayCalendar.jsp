@@ -2,10 +2,10 @@
 <%@ page import="java.util.*" %>
 <%
 String[] schedule = (String[]) session.getAttribute("schedule");
-Date startDate = (Date) session.getAttribute("startDate");
-Date endDate = (Date) session.getAttribute("endDate");
+java.util.Date startDate = (java.util.Date) session.getAttribute("startDate");
+java.util.Date endDate = (java.util.Date) session.getAttribute("endDate");
 String weekday[] = {"月","火","水","木","金","土","日"};
-Date date = new Date();
+java.util.Date date = new java.util.Date();
 Calendar cal = Calendar.getInstance();
 cal.setTime(date);
 %>
@@ -72,7 +72,6 @@ cal.setTime(date);
                 </tr>
               </thead>
             <tbody>
-              <input type="hidden" name="page" value="update">
                 <% String today; %>
                 <% int week = cal.get(Calendar.DAY_OF_WEEK); %>
                   <tr>
@@ -86,16 +85,17 @@ cal.setTime(date);
                     <%= schedule[j + ((week - 1) * 6)] %>
                     <form
                   class="change inactive"
-                  action="Servlet"
+                  action="../Servlet"
                   method="GET"
                 >
                 <% today = String.valueOf(cal.get(Calendar.YEAR)) + "-" + String.valueOf(cal.get(Calendar.MONTH) + 1) + "-" + String.valueOf(cal.get(Calendar.DAY_OF_MONTH)); %>
-                <input type="hidden" name="date" value="<%= today %>"> 
+                  <input type="hidden" name="date" value="<%= today %>">
+                  <input type="hidden" name="page" value="update">
+                  <input type="hidden" name="lesson" value="<%= schedule[j + ((week - 1) * 6)] %>">
                   <select class="form-input change-type" name="change-type">
                     <option value="">選択</option>
                     <option value="休講">休講</option>
                     <option value="宿題">宿題</option>
-                    <option value="振替">振替</option>
                     <option value="試験">試験</option>
                   </select>
                   <input

@@ -2,15 +2,18 @@
 <%@ page import="java.util.*" %>
 <%
 String[] schedule = (String[]) session.getAttribute("schedule");
-int startMonth = 1;
-int endMonth = 12;
+Calendar cal = Calendar.getInstance();
+Boolean bool = (Boolean) session.getAttribute("bool");
 Date startDate = (Date) session.getAttribute("startDate");
 Date endDate = (Date) session.getAttribute("endDate");
+cal.setTime(startDate);
+int startMonth = cal.get(Calendar.MONTH) - 1;
+cal.setTime(endDate);
+int endMonth = cal.get(Calendar.MONTH);
 Date date = new Date();
-Calendar cal = Calendar.getInstance();
 cal.setTime(date);
 int year = cal.get(Calendar.YEAR);
-cal.set(year, startMonth - 1, 1);
+cal.set(year, startMonth + 1, 1);
 int month = cal.get(Calendar.MONTH);
 %>
 
@@ -41,7 +44,17 @@ int month = cal.get(Calendar.MONTH);
       <section class="calendar-container">
         <table class="calendar">
           <caption class="date">
-            前期
+            <%
+            if (bool) {
+            %>
+              前期
+            <%
+            } else {
+            %>
+            後期
+            <%
+            }
+            %>
           </caption>
           <thead>
             <tr>
@@ -70,10 +83,9 @@ int month = cal.get(Calendar.MONTH);
             </tr>
           </thead>
           <tbody>
-            <input type="hidden" name="page" value="update">
             <% String today; %>
             <%
-            for (int count = cal.get(Calendar.MONTH); count != endMonth; count++) {
+            for (int count = cal.get(Calendar.MONTH); count <= endMonth; count++) {
                 if (count == 12 && endMonth != 12) {
                     count = 0;
                 }
@@ -103,17 +115,17 @@ int month = cal.get(Calendar.MONTH);
                                                 <p>授業</p>
                                                 <form
                                                 class="change inactive"
-                                                action="./monthCalendarSuccess.html"
-                                                method="post"
+                                                action="../Servlet"
+                                                method="GET"
                                               >
                                                 <% today = String.valueOf(cal.get(Calendar.YEAR)) + "-" + String.valueOf(cal.get(Calendar.MONTH) + 1) + "-" + String.valueOf(cal.get(Calendar.DAY_OF_MONTH)); %>
                                                 <input type="hidden" name="date" value="<%= today %>">
+                                                <input type="hidden" name="page" value="update">
+                                                <input type="hidden" name="lesson" value="All">
+                                                <input type="hidden" name="change-period" value="0">
                                                 <select class="form-input change-type" name="change-type">
                                                   <option value="">選択</option>
-                                                  <option value="休講">休講</option>
-                                                  <option value="宿題">宿題</option>
                                                   <option value="振替">振替</option>
-                                                  <option value="試験">試験</option>
                                                 </select>
                                                 <input
                                                   class="change-calendar inactive"

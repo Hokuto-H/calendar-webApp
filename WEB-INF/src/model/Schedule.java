@@ -51,7 +51,7 @@ public class Schedule {
         return this.schedule;
     }
 
-    public void setDate(String termDate[]) {
+    public void setDate(String[] termDate) {
         Date date = new Date();
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(date);
