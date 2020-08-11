@@ -13,7 +13,8 @@ public class DataBase {
     private void sqlConnect() {
         try {
             this.db = DriverManager.getConnection(
-                    "jdbc:mysql://localhost/db_u306161?useUnicode=true&characterEncoding=utf8", "u306161", "p306161");
+                //*URL, id, passは各々の設定
+                    "URL", "id", "pass");
         } catch (Exception e) {
             e.printStackTrace();
             try {
