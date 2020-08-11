@@ -1,7 +1,14 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
 <%@ page import="java.util.*" %>
+<%@ page import="java.text.*" %>
 <%
 String[] schedule = (String[]) session.getAttribute("schedule");
+String[][] event = (String[][]) session.getAttribute("event");
+SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+java.util.Date eventDate = new java.util.Date();
+java.util.Date eventDueDate = new java.util.Date();
+java.util.Date compareDate = new java.util.Date();
+Calendar eventWeekday = Calendar.getInstance();
 java.util.Date startDate = (java.util.Date) session.getAttribute("startDate");
 java.util.Date endDate = (java.util.Date) session.getAttribute("endDate");
 String weekday[] = {"月","火","水","木","金","土","日"};
@@ -31,6 +38,7 @@ cal.setTime(date);
           <li class="nav-link"><a href="./weekCalendar.jsp"></a>週単位</li>
           <li class="nav-link"><a href="./monthCalendar.jsp"></a>月単位</li>
           <li class="nav-link"><a href="./termCalendar.jsp"></a>学期単位</li>
+          <li class="nav-link"><a href="./reRegist.jsp"></a>再登録</li>
         </ul>
       </nav>
     </header>
@@ -80,43 +88,94 @@ cal.setTime(date);
                     %>
                     <td class="cell">
                     <%
-                        if (schedule[j + ((week - 1) * 6)] != null && startDate.compareTo(cal.getTime()) <= 0 && endDate.compareTo(cal.getTime()) > 0) {
+                        if (startDate.compareTo(cal.getTime()) <= 0 && endDate.compareTo(cal.getTime()) > 0) {
+                          if (schedule[j + ((week - 1) * 6)] != null) {
                     %>
-                    <%= schedule[j + ((week - 1) * 6)] %>
-                    <form
-                  class="change inactive"
-                  action="../Servlet"
-                  method="GET"
-                >
-                <% today = String.valueOf(cal.get(Calendar.YEAR)) + "-" + String.valueOf(cal.get(Calendar.MONTH) + 1) + "-" + String.valueOf(cal.get(Calendar.DAY_OF_MONTH)); %>
-                  <input type="hidden" name="date" value="<%= today %>">
-                  <input type="hidden" name="page" value="update">
-                  <input type="hidden" name="lesson" value="<%= schedule[j + ((week - 1) * 6)] %>">
-                  <select class="form-input change-type" name="change-type">
-                    <option value="">選択</option>
-                    <option value="休講">休講</option>
-                    <option value="宿題">宿題</option>
-                    <option value="試験">試験</option>
-                  </select>
-                  <input
-                    class="change-calendar inactive"
-                    type="date"
-                    name="calendar"
-                    max="9999-12-31"
-                    required
-                  />
-                  <select class="form-input change-period inactive" name="change-period" required>
-                    <option value="">時限</option>
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4">4</option>
-                    <option value="5">5</option>
-                    <option value="6">6</option>
-                  </select>
-                  <input class="btn go" type="submit" value="送信" />
-                </form>
-                    <%
+                          <%= schedule[j + ((week - 1) * 6)] %>
+                          <form
+                          class="change inactive"
+                          action="../Servlet"
+                          method="GET"
+                        >
+                        <% today = String.valueOf(cal.get(Calendar.YEAR)) + "-" + String.valueOf(cal.get(Calendar.MONTH) + 1) + "-" + String.valueOf(cal.get(Calendar.DAY_OF_MONTH)); %>
+                          <input type="hidden" name="date" value="<%= today %>">
+                          <input type="hidden" name="page" value="update">
+                          <input type="hidden" name="lesson" value="<%= schedule[j + ((week - 1) * 6)] %>">
+                          <select class="form-input change-type" name="change-type">
+                            <option value="">選択</option>
+                            <option value="休講">休講</option>
+                            <option value="宿題">宿題</option>
+                            <option value="試験">試験</option>
+                          </select>
+                          <input
+                            class="change-calendar inactive"
+                            type="date"
+                            name="calendar"
+                            max="9999-12-31"
+                            required
+                          />
+                          <select class="form-input change-period inactive" name="change-period" required>
+                            <option value="">時限</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                            <option value="6">6</option>
+                          </select>
+                          <input class="btn go" type="submit" value="送信" />
+                        </form>
+                          <%
+                          } else if (event[0][0] != null) {
+                            for (int k = 0; k < event[0].length; k++) {
+                              eventDate = dateFormat.parse(event[0][k]);
+                              eventDueDate = dateFormat.parse(event[3][k]);
+                              compareDate = dateFormat.parse(dateFormat.format(cal.getTime()));
+                              if (eventDate.equals(compareDate) || eventDueDate.equals(compareDate)) {
+                                switch(event[2][k]) {
+                                  case "宿題": {
+                                    if (eventDueDate.equals(compareDate) && Integer.parseInt(event[4][k]) == j + 1) {
+                          %>
+                                      <p><%= event[1][k] %>(宿題)</p>
+                          <%
+                                    }
+                                  break;
+                                  }
+                                  case "休講": {
+                                    if (eventDate.equals(compareDate) && event[1][k] == schedule[j + ((week - 1) * 6)]) {
+                          %>
+                                      <p>休講</p>
+                          <%
+                                    } else {
+                                      if (Integer.parseInt(event[4][k]) == j + 1) {
+                                        eventWeekday.setTime(eventDate);
+                          %>
+                                        <p><%= event[1][k] %>(補講)</p>
+                          <%
+                                      }
+                                    }
+                                  break;
+                                  }
+                                  case "試験": {
+                                    if (eventDueDate.equals(compareDate)) {
+                          %>
+                                    <p><%= event[1][k] %>(試験)</p>
+                          <%
+                                    }
+                                  break;
+                                  }
+                                  case "振替": {
+                                    if (eventDueDate.equals(compareDate) && schedule[j + ((Integer.parseInt(event[1][k]) - 1) * 6)] != null) {
+                          %>
+                                      <p><%= schedule[j + ((Integer.parseInt(event[1][k]) - 1) * 6)] %>(振替)</p>
+                          <%
+                                    }
+                                  break;
+                                  }
+                                }
+                              }
+                            }
+                          }
                         }
                     }
                     %>

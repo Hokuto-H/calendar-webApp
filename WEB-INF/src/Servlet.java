@@ -37,20 +37,15 @@ public class Servlet extends HttpServlet {
                     session.setAttribute("endDate", termPeriod[1]);
                     session.setAttribute("schedule", db.getSchedule(id, db.termCheck(id)));
                     session.setAttribute("bool", db.termCheck(id));
-                    //*ここからの授業変更しょりが出来ない
+                    // *ここからの授業変更しょりが出来ない
                     String[][] event = db.getEvent(id);
-                    if (event != null) {
-                        session.setAttribute("event", event);
-                    } else {
-                        session.setAttribute("event", null);
-                    }
+                    session.setAttribute("event", event);
                     // *フォワードだとurl変更できない為リダイレクト
                     response.sendRedirect("./jsp/dayCalendar.jsp");
                 } else {
                     // *フォワード(ログイン失敗)、セッション破棄
                     session.invalidate();
-                    RequestDispatcher dispatcher = request.getRequestDispatcher("/loginFailed.html");
-                    dispatcher.forward(request, response);
+                    response.sendRedirect("/loginFailed.html");
                 }
                 break;
             }
@@ -112,14 +107,51 @@ public class Servlet extends HttpServlet {
                 String z = request.getParameter("change-period");
                 db.setEvent(id, v, w, x, y, z);
                 String[][] event = db.getEvent(id);
-                if (event != null) {
-                    session.setAttribute("event", event);
-                } else {
-                    session.setAttribute("event", null);
-                }
+                session.setAttribute("event", event);
                 // *フォワードだとurl変更できない為リダイレクト
                 response.sendRedirect("./jsp/dayCalendar.jsp");
                 break;
+            }
+            case "reRegist": {
+                // *セッション取得ないならnull
+                HttpSession session = request.getSession(false);
+                String id = (String) session.getAttribute("id");
+                // *スケジュール配列初期化
+                String[] x = new String[42];
+                String[] y = new String[42];
+                String[] z = new String[42];
+                String[] date = new String[8];
+                // *前期と後期の日付取得
+                date[0] = request.getParameter("previousterm-start-month");
+                date[1] = request.getParameter("previousterm-start-day");
+                date[2] = request.getParameter("previousterm-end-month");
+                date[3] = request.getParameter("previousterm-end-day");
+                date[4] = request.getParameter("afterterm-start-month");
+                date[5] = request.getParameter("afterterm-start-day");
+                date[6] = request.getParameter("afterterm-end-month");
+                date[7] = request.getParameter("afterterm-end-day");
+                schedule.setDate(date);
+                // *前期のスケジュール
+                x = request.getParameterValues("previousterm-lesson-weekday");
+                y = request.getParameterValues("previousterm-lesson-time");
+                z = request.getParameterValues("previousterm-lesson-subjects");
+                schedule.setSchedule(x, y, z);
+                db.setRePreviousSchedule(id, schedule.getDate(), schedule.getSchedule());
+                // *後期のスケジュール
+                x = request.getParameterValues("afterterm-lesson-weekday");
+                y = request.getParameterValues("afterterm-lesson-time");
+                z = request.getParameterValues("afterterm-lesson-subjects");
+                schedule.setSchedule(x, y, z);
+                db.setReAfterSchedule(id, schedule.getDate(), schedule.getSchedule());
+                //* イベント削除
+                db.deleteEvent(id);
+                Date[] termPeriod = db.getTermPeriod(id, db.termCheck(id));
+                session.setAttribute("startDate", termPeriod[0]);
+                session.setAttribute("endDate", termPeriod[1]);
+                session.setAttribute("schedule", db.getSchedule(id, db.termCheck(id)));
+                session.setAttribute("bool", db.termCheck(id));
+                // *フォワードだとurl変更できない為リダイレクト
+                response.sendRedirect("./jsp/dayCalendar.jsp");
             }
             default:
                 break;

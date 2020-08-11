@@ -46,7 +46,8 @@ public class DataBase {
             String changePeriod) {
         try {
             this.sqlConnect();
-            this.ps = this.db.prepareStatement("INSERT INTO event VALUES(?, ?, ?, ?, ?, ?)");
+            this.ps = this.db.prepareStatement(
+                    "INSERT INTO event (id, date, lesson, changeType, dueDate, period) VALUES(?, ?, ?, ?, ?, ?)");
             this.ps.setString(1, id);
             this.ps.setDate(2, java.sql.Date.valueOf(date));
             this.ps.setString(3, lesson);
@@ -94,6 +95,31 @@ public class DataBase {
         }
     }
 
+    public void setRePreviousSchedule(String id, String[] date, String[] schedule) {
+        int i = 0;
+        try {
+            this.sqlConnect();
+            this.ps = this.db.prepareStatement(
+                "UPDATE previousSchedule SET startDate = ?, endDate = ?, `0` = ?, `1` = ?, `2` = ?, `3` = ?, `4` = ?, `5` = ?, `6` = ?, `7` = ?, `8` = ?, `9` = ?, `10` = ?, `11` = ?, `12` = ?, `13` = ?, `14` = ?, `15` = ?, `16` = ?, `17` = ?, `18` = ?, `19` = ?, `20` = ?, `21` = ?, `22` = ?, `23` = ?, `24` = ?, `25` = ?, `26` = ?, `27` = ?, `28` = ?, `29` = ?, `30` = ?, `31` = ?, `32` = ?, `33` = ?, `34` = ?, `35` = ?, `36` = ?, `37` = ?, `38` = ?, `39` = ?, `40` = ?, `41` = ? WHERE id = ?");
+            this.ps.setDate(1, java.sql.Date.valueOf(date[0]));
+            this.ps.setDate(2, java.sql.Date.valueOf(date[1]));
+            while (i < 42) {
+                this.ps.setString(i + 3, schedule[i]);
+                i++;
+            }
+            this.ps.setString(45, id);
+            this.ps.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                this.db.close();
+            } catch (Exception er) {
+                er.printStackTrace();
+            }
+        }
+    }
+
     public void setAfterSchedule(String id, String[] date, String[] schedule) {
         int i = 0;
         try {
@@ -119,23 +145,20 @@ public class DataBase {
         }
     }
 
-    public String[][] getEvent(String id) {
-        String[][] event = new String[5][100];
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+    public void setReAfterSchedule(String id, String[] date, String[] schedule) {
+        int i = 0;
         try {
             this.sqlConnect();
-            this.ps = this.db.prepareStatement("SELECT * FROM event WHERE id = ?");
-            this.ps.setString(1, id);
-            this.rs = this.ps.executeQuery();
-            int i = 0;
-            while (this.rs.next()) {
-                event[0][i] = dateFormat.format(this.rs.getDate(2));
-                event[1][i] = this.rs.getString(3);
-                event[2][i] = this.rs.getString(4);
-                event[3][i] = dateFormat.format(this.rs.getDate(5));
-                event[4][i] = this.rs.getString(6);
+            this.ps = this.db.prepareStatement(
+                    "UPDATE afterSchedule SET startDate = ?, endDate = ?, `0` = ?, `1` = ?, `2` = ?, `3` = ?, `4` = ?, `5` = ?, `6` = ?, `7` = ?, `8` = ?, `9` = ?, `10` = ?, `11` = ?, `12` = ?, `13` = ?, `14` = ?, `15` = ?, `16` = ?, `17` = ?, `18` = ?, `19` = ?, `20` = ?, `21` = ?, `22` = ?, `23` = ?, `24` = ?, `25` = ?, `26` = ?, `27` = ?, `28` = ?, `29` = ?, `30` = ?, `31` = ?, `32` = ?, `33` = ?, `34` = ?, `35` = ?, `36` = ?, `37` = ?, `38` = ?, `39` = ?, `40` = ?, `41` = ? WHERE id = ?");
+            this.ps.setDate(1, java.sql.Date.valueOf(date[2]));
+            this.ps.setDate(2, java.sql.Date.valueOf(date[3]));
+            while (i < 42) {
+                this.ps.setString(i + 3, schedule[i]);
                 i++;
             }
+            this.ps.setString(45, id);
+            this.ps.executeUpdate();
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -145,7 +168,48 @@ public class DataBase {
                 er.printStackTrace();
             }
         }
-        return event;
+    }
+
+    public String[][] getEvent(String id) {
+        String[][] dummy = new String[2][2];
+        List<String> date = new ArrayList<String>();
+        List<String> lesson = new ArrayList<String>();
+        List<String> changeType = new ArrayList<String>();
+        List<String> calendar = new ArrayList<String>();
+        List<String> changePeriod = new ArrayList<String>();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        try {
+            this.sqlConnect();
+            this.ps = this.db.prepareStatement("SELECT * FROM event WHERE id = ?");
+            this.ps.setString(1, id);
+            this.rs = this.ps.executeQuery();
+            while (this.rs.next()) {
+                date.add(dateFormat.format(this.rs.getDate(3)));
+                lesson.add(this.rs.getString(4));
+                changeType.add(this.rs.getString(5));
+                calendar.add(dateFormat.format(this.rs.getDate(6)));
+                changePeriod.add(this.rs.getString(7));
+            }
+            if (date.size() == 0) {
+                return dummy;
+            }
+            String[][] event = new String[5][date.size()];
+            event[0] = date.toArray(new String[date.size()]);
+            event[1] = lesson.toArray(new String[lesson.size()]);
+            event[2] = changeType.toArray(new String[changeType.size()]);
+            event[3] = calendar.toArray(new String[calendar.size()]);
+            event[4] = changePeriod.toArray(new String[changePeriod.size()]);
+            return event;
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                this.db.close();
+            } catch (Exception er) {
+                er.printStackTrace();
+            }
+        }
+        return dummy;
     }
 
     public String[] getSchedule(String id, Boolean bool) {
@@ -202,6 +266,23 @@ public class DataBase {
             }
         }
         return termPeriod;
+    }
+
+    public void deleteEvent(String id) {
+        try {
+            this.sqlConnect();
+            this.ps = this.db.prepareStatement("DELETE FROM event WHERE id = ?");
+            this.ps.setString(1, id);
+            this.ps.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                this.db.close();
+            } catch (Exception er) {
+                er.printStackTrace();
+            }
+        }
     }
 
     public Boolean termCheck(String id) {

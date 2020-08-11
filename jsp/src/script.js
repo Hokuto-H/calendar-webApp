@@ -5,17 +5,17 @@ $(function () {
   });
   $(".change-type").click(function () {
     let change = $(this).val();
-    if (change == "休講" || change == "振替") {
+    if (change == "休講" || change == "振替" || change == "宿題" || change == "試験") {
       //*change-calendarクラス
       $(this).siblings('.change-calendar').removeClass("inactive");
       //*change-periodクラス
       $(this).siblings('.change-period').removeClass("inactive");
     }
-    if (change == "宿題" && change == "試験" && change == "") {
+    if (change == "") {
       //*change-calendarクラス
-      $(this).nextAll(".change-calendar").addClass("inactive");
+      $(this).siblings(".change-calendar").addClass("inactive");
       //*change-periodクラス
-      $(this).nextAll(".change-period").addClass("inactive");
+      $(this).siblings(".change-period").addClass("inactive");
     }
   });
   //*ここまで
