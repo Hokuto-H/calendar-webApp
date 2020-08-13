@@ -12,9 +12,8 @@ public class DataBase {
 
     private void sqlConnect() {
         try {
-            this.db = DriverManager.getConnection(
                 //*URL, id, passは各々の設定
-                    "URL", "id", "pass");
+            this.db = DriverManager.getConnection("URL", "id", "pass");
         } catch (Exception e) {
             e.printStackTrace();
             try {
@@ -101,7 +100,7 @@ public class DataBase {
         try {
             this.sqlConnect();
             this.ps = this.db.prepareStatement(
-                "UPDATE previousSchedule SET startDate = ?, endDate = ?, `0` = ?, `1` = ?, `2` = ?, `3` = ?, `4` = ?, `5` = ?, `6` = ?, `7` = ?, `8` = ?, `9` = ?, `10` = ?, `11` = ?, `12` = ?, `13` = ?, `14` = ?, `15` = ?, `16` = ?, `17` = ?, `18` = ?, `19` = ?, `20` = ?, `21` = ?, `22` = ?, `23` = ?, `24` = ?, `25` = ?, `26` = ?, `27` = ?, `28` = ?, `29` = ?, `30` = ?, `31` = ?, `32` = ?, `33` = ?, `34` = ?, `35` = ?, `36` = ?, `37` = ?, `38` = ?, `39` = ?, `40` = ?, `41` = ? WHERE id = ?");
+                    "UPDATE previousSchedule SET startDate = ?, endDate = ?, `0` = ?, `1` = ?, `2` = ?, `3` = ?, `4` = ?, `5` = ?, `6` = ?, `7` = ?, `8` = ?, `9` = ?, `10` = ?, `11` = ?, `12` = ?, `13` = ?, `14` = ?, `15` = ?, `16` = ?, `17` = ?, `18` = ?, `19` = ?, `20` = ?, `21` = ?, `22` = ?, `23` = ?, `24` = ?, `25` = ?, `26` = ?, `27` = ?, `28` = ?, `29` = ?, `30` = ?, `31` = ?, `32` = ?, `33` = ?, `34` = ?, `35` = ?, `36` = ?, `37` = ?, `38` = ?, `39` = ?, `40` = ?, `41` = ? WHERE id = ?");
             this.ps.setDate(1, java.sql.Date.valueOf(date[0]));
             this.ps.setDate(2, java.sql.Date.valueOf(date[1]));
             while (i < 42) {
